@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "evaporate", "evaporate\evaporate.csproj", "{DDC26EF1-D029-4DA3-9560-39E2F782D742}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "furry-potato", "evaporate\furry-potato.csproj", "{DDC26EF1-D029-4DA3-9560-39E2F782D742}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
