@@ -1,10 +1,10 @@
 # ASP.NET Core File Upload
 
-**TL;DR** : I was searching in internet for a very simple lightweight FileUpload plugin using HTML, ASP.NET Core Web API and was not able to find one. So i wrote it on my own.
+**TL;DR** : I was searching in internet for a very simple lightweight FileUpload plugin using HTML, ASP.NET Core Web API and was not able to find one. So i wrote it on my own. This is primarily for the purpose of deploying .NET packages to servers. As of now there is no good way of copying (or) deploying content to target machines securely.
 
 
 ## What does it do
-Allows the upload of a file from simple HTML page to a ASP. NET Core web server using API. 
+Allows the upload of a zip file from simple HTML page to a ASP. NET Core web server using API. You can also use CURL to pose the zip file. In the server side, it unzip the file to a new folder (with a new guid) and then return the directory of the folder.
 
 ## How does it work
 
