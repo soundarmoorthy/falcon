@@ -2,7 +2,6 @@
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -37,7 +36,7 @@ namespace evaporate.Controllers
                 if (file == null)
                     return BadRequest("Invalid file");
 
-                if (System.IO.Path.GetExtension(file.FileName) != ".zip")
+                if (Path.GetExtension(file.FileName) != ".zip")
                     return BadRequest("Only zip files are accepted");
 
                 return Content(CopyFile(file));
