@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,32 +22,61 @@ namespace evaporate.Controllers
 
         [HttpPost]
         [Route("Upload")]
-        public async Task<IActionResult> Upload()
+        public IActionResult Upload()
         {
-            var files = Request.Form.Files;
-            if (files == null || !files.Any())
-                return NoContent();
-            foreach(var file in files)
+            try
             {
-                await CopyFileAsync(file);
+                var files = Request.Form.Files;
+                if (files == null || !files.Any())
+                    return NoContent();
+
+                if (files.Count() > 1)
+                    return BadRequest("Cannot accept more than one file");
+
+                var file = files.FirstOrDefault();
+
+                if (file == null)
+                    return BadRequest("Invalid file");
+
+                if (System.IO.Path.GetExtension(file.FileName) != ".zip")
+                    return BadRequest("Only zip files are accepted");
+
+                return Content(CopyFile(file));
             }
-
-            return Ok();
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw ex;
+            }
         }
 
-        public async Task CopyFileAsync(IFormFile file)
+        public string CopyFile(IFormFile file)
         {
-            var path = System.IO.Path.Combine(contentPath, file.FileName);
-            var stream = System.IO.File.OpenWrite(path);
-            await file.CopyToAsync(stream);
+            var path = Path.Combine(contentPath, file.FileName);
+            using (var stream = System.IO.File.OpenWrite(path))
+            {
+                file.CopyTo(stream);
+            }
+            return Unzip(path);
         }
 
+        private string Unzip(string zipFile)
+        {
+            var uuid = Guid.NewGuid();
+            var destDir = Path.Combine(contentPath, uuid.ToString());
+            if (!Directory.Exists(destDir))
+                Directory.CreateDirectory(destDir);
 
-        static string contentPath = System.IO.Path.Combine(Program.ContentRoot(), "Contents");
+            ZipFile.ExtractToDirectory(zipFile, destDir);
+            return destDir;
+        }
+
+        static readonly string
+            contentPath = Path.Combine(Program.ContentRoot(), "Contents");
         static FileController()
         {
-            if (!System.IO.Directory.Exists(contentPath))
-                System.IO.Directory.CreateDirectory(contentPath);
+            if (!Directory.Exists(contentPath))
+                Directory.CreateDirectory(contentPath);
         }
     }
 }
