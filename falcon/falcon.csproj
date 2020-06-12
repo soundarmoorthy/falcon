@@ -8,10 +8,14 @@
         <ExternalConsole>true</ExternalConsole>
         <ApplicationURL>https://localhost:5001;http://localhost:5000</ApplicationURL>
     </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+      <PlatformTarget>x64</PlatformTarget>
+    </PropertyGroup>
     <ItemGroup>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="wwwroot\" />
+        <Folder Include="Falcon\" />
     </ItemGroup>
     <ItemGroup>
         <Content Update="wwwroot\index.html">

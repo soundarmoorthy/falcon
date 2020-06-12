@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using falcon.Falcon;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -39,7 +40,12 @@ namespace evaporate.Controllers
                 if (Path.GetExtension(file.FileName) != ".zip")
                     return BadRequest("Only zip files are accepted");
 
-                return Content(CopyFile(file));
+                var context = CreateDeployContext(file);
+
+                if (Falcon.Instance.Deploy(context))
+                    return Content(context.DestPath);
+                else
+                    throw context.Exception;
             }
             catch (Exception ex)
             {
@@ -48,26 +54,14 @@ namespace evaporate.Controllers
             }
         }
 
-        public string CopyFile(IFormFile file)
-        {
-            var path = Path.Combine(contentPath, file.FileName);
-            using (var stream = System.IO.File.OpenWrite(path))
-            {
-                file.CopyTo(stream);
-            }
-            return Unzip(path);
-        }
+        private Context CreateDeployContext(IFormFile file)
+            =>
+            new Context(
+                file.OpenReadStream(),
+                contentPath,
+                file.FileName
+                );
 
-        private string Unzip(string zipFile)
-        {
-            var uuid = Guid.NewGuid();
-            var destDir = Path.Combine(contentPath, uuid.ToString());
-            if (!Directory.Exists(destDir))
-                Directory.CreateDirectory(destDir);
-
-            ZipFile.ExtractToDirectory(zipFile, destDir);
-            return destDir;
-        }
 
         static readonly string
             contentPath = Path.Combine(Program.ContentRoot(), "Contents");
