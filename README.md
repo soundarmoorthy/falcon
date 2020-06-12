@@ -1,11 +1,13 @@
-# ASP.NET Core File Upload
+# Falcon
 
-**TL;DR** : I was searching in internet for a very simple lightweight FileUpload plugin using HTML, ASP.NET Core Web API and was not able to find one. So i wrote it on my own. This is primarily for the purpose of deploying .NET packages to servers. As of now there is no good way of copying (or) deploying content to target machines securely.
+**TL;DR** : I was searching in internet for a very simple lightweight FileUpload that can  be used as deployment mechanism to deploy .NET applications and was not able to find one. This is primarily for the purpose of deploying .NET packages to servers. As of now there is no good way of copying (or) deploying content to target machines securely apart from SSH (or) proprietary software. 
+**CAUTION** : 
+As of now it doesn't have any security mechanism inbuilt and we are achieving that using Trusted authentication setup between servers. (Build and target). So use it with caution, and make sure it's accesible only from intranet. 
 
 
 ## What does it do
 
-Allows the upload of a zip file from simple HTML page to a ASP. NET Core web server using API. You can also use CURL to pose the zip file. In the server side, it unzip the file to a new folder (with a new guid) and then return the directory of the folder.
+Allows the upload of a zip file from simple HTML page (or) a CURL command to a ASP. NET Core web server using API. In the server side, it unzip the file to a new folder (with a new guid) and then return the directory of the folder.
 
 **NOTE**
 As of now the application is configured to run as in-process from an IIS server. If you want to run it natively remove the `host.UseIIS()` statement in Program.cs
