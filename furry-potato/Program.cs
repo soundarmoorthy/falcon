@@ -23,15 +23,16 @@ namespace evaporate
             Host.CreateDefaultBuilder(args)
                   .ConfigureWebHostDefaults(webBuilder =>
                   {
+                      webBuilder.UseIIS();
                       webBuilder.UseStartup<Startup>();
                       webBuilder.UseStaticWebAssets();
                       webBuilder.UseContentRoot(ContentRoot());
                   });
-  
+
         public static string ContentRoot()
-          {
+        {
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            return path;    
+            return path;
         }
     }
 }
