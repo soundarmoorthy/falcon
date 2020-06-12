@@ -4,12 +4,15 @@
 
 
 ## What does it do
+
 Allows the upload of a zip file from simple HTML page to a ASP. NET Core web server using API. You can also use CURL to pose the zip file. In the server side, it unzip the file to a new folder (with a new guid) and then return the directory of the folder.
+
+**NOTE**
+As of now the application is configured to run as in-process from an IIS server. If you want to run it natively remove the `host.UseIIS()` statement in Program.cs
 
 ## How does it work
 
-The frontend is a simple HTML file served from a .NET Core web server running on Kestral. The server allows serving of static files and exposes a REST endpoint written in C# .NET Core. When the user uploads a file it's stored in the "contents" folder in bin\debug.
-**WordPress** and **Zendesk**. With [Handlebars templates](http://handlebarsjs.com/), you have full control over what you export.
+The frontend is a simple HTML file served from a .NET Core web server running on Kestral. The server allows serving of static files and exposes a REST endpoint written in C# .NET Core. When the user uploads a file it's stored in the "contents" folder in bin\debug (in development machine). and in <siteroot>\contents\ folder when run from a web server. 
 
 > Before starting to publish, you must link an account in the **Publish** sub-menu.
 
